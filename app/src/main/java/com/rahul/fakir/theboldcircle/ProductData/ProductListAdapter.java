@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.MyViewHolder> {
 
-    private List<ProductObject> productList;
+    private List<Products> productList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name, type, description, price;
@@ -30,7 +30,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
 
-    public ProductListAdapter(List<ProductObject> productList) {
+    public ProductListAdapter(List<Products> productList) {
         this.productList = productList;
     }
 
@@ -44,11 +44,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        ProductObject product = productList.get(position);
+        Products product = productList.get(position);
         holder.name.setText(product.getName());
         holder.type.setText(product.getType());
         holder.description.setText(product.getDescription());
-        holder.price.setText("R" + String.valueOf(product.getPrice()));
+        holder.price.setText(product.getPrice());
     }
 
     @Override

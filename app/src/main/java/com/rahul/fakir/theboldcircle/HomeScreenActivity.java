@@ -12,8 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.firebase.client.Firebase;
+
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessException;
+import com.backendless.exceptions.BackendlessFault;
 import com.rahul.fakir.theboldcircle.ProductData.ProductsActivity;
 import com.rahul.fakir.theboldcircle.StoreData.StoresActivity;
 import com.rahul.fakir.theboldcircle.UserData.LogInActivity;
@@ -114,12 +119,30 @@ public class HomeScreenActivity extends AppCompatActivity
         return true;
     }
 
-    private void logout(){
-        Firebase ref = new Firebase("https://the-bold-circle.firebaseio.com");
-        ref.unauth();
-        Intent intentToCreateProfile = new Intent(HomeScreenActivity.this, LogInActivity.class);
-        intentToCreateProfile.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intentToCreateProfile);
-        finish();
+
+    private void logout() {
+
+
+        Backendless.UserService.logout( new AsyncCallback<Void>()
+        {
+            public void handleResponse( Void response )
+            {
+                // user has been logged out.
+                Intent intentToCreateProfile = new Intent(HomeScreenActivity.this, LogInActivity.class);
+                intentToCreateProfile.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentToCreateProfile);
+                finish();
+            }
+
+            public void handleFault( BackendlessFault fault )
+            {
+                // something went wrong and logout failed, to get the error code call fault.getCode()
+                Toast.makeText(getApplicationContext(), fault.toString(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+
     }
+
 }

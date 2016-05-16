@@ -11,9 +11,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
+
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.rahul.fakir.theboldcircle.HomeScreenActivity;
 import com.rahul.fakir.theboldcircle.R;
 
@@ -22,23 +25,25 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        Firebase.setAndroidContext(this);
+        Backendless.initApp( LogInActivity.this, "1D58A6DB-C412-6AA4-FFBB-2E2A7EC0CB00", "CDBE2EF7-DC1E-0D16-FFD8-18D0DF281000", "v1" );
         final TextView tvCreateProfile = (TextView) findViewById(R.id.tvCreateProfile);
         final Button btnLogin = (Button) findViewById(R.id.btnLogin);
         final EditText etEmail = (EditText) findViewById(R.id.etEmail);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
         final TextView tvResetPassword = (TextView) findViewById(R.id.tvForgotPassword);
         final CheckBox cbxPersistSession = (CheckBox) findViewById(R.id.cbxPersistSession);
-        Firebase ref = new Firebase("https://the-bold-circle.firebaseio.com");
 
+        String userToken = UserTokenStorageFactory.instance().getStorage().get();
 
-        AuthData authData = ref.getAuth();
-        if (authData != null) {
+        if( userToken != null && !userToken.equals( "" ) )
+        {
             Intent intentToMain = new Intent(LogInActivity.this, HomeScreenActivity.class);
             intentToMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intentToMain);
             finish();
         }
+
+
 
         tvCreateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,30 +72,24 @@ public class LogInActivity extends AppCompatActivity {
                 if (result.getStatus()){
                     result = validateForm(etPassword.getText().toString(), 3);
                     if (result.getStatus()) {
-                        final Firebase ref = new Firebase("https://the-bold-circle.firebaseio.com");
-                        // Create a handler to handle the result of the authentication
-                        Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
-                            @Override
-                            public void onAuthenticated(AuthData authData) {
-                                // Authenticated successfully with payload authData
-                                Intent intentToMain = new Intent(LogInActivity.this, HomeScreenActivity.class);
-                                intentToMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                if (!cbxPersistSession.isChecked()) {
-                                    ref.unauth();
-                                }
-                                startActivity(intentToMain);
-                                finish();
+
+
+                        Backendless.UserService.login( etEmail.getText().toString(), etPassword.getText().toString(), new AsyncCallback<BackendlessUser>()
+                        {
+                            public void handleResponse( BackendlessUser user )
+                            {
+                                // user has been logged in
+                                Intent intent = new Intent (LogInActivity.this, HomeScreenActivity.class);
+                                startActivity(intent);
                             }
 
-                            @Override
-                            public void onAuthenticationError(FirebaseError firebaseError) {
-                                // Authenticated failed with error firebaseError
-                                Toast.makeText(getApplicationContext(), firebaseError.toString(),
+                            public void handleFault( BackendlessFault fault )
+                            {
+                                // login failed, to get the error code call fault.getCode()
+                               Toast.makeText(getApplicationContext(), fault.toString(),
                                         Toast.LENGTH_LONG).show();
                             }
-                        };
-
-                        ref.authWithPassword(etEmail.getText().toString(), etPassword.getText().toString(), authResultHandler);
+                        }, cbxPersistSession.isChecked());
 
                     } else{
                         Toast.makeText(getApplicationContext(), result.getMessage(),

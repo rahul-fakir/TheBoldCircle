@@ -7,8 +7,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
+
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessException;
+import com.backendless.exceptions.BackendlessFault;
 import com.rahul.fakir.theboldcircle.R;
 
 import java.util.HashMap;
@@ -19,9 +23,8 @@ public class CreateProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
+        Backendless.initApp( CreateProfileActivity.this, "1D58A6DB-C412-6AA4-FFBB-2E2A7EC0CB00", "CDBE2EF7-DC1E-0D16-FFD8-18D0DF281000", "v1" );
 
-        //allows this activity to connect to Firebase
-        Firebase.setAndroidContext(this);
 
         //variable decleration
         final EditText etFirstName = (EditText) findViewById(R.id.etFirstName);
@@ -51,35 +54,34 @@ public class CreateProfileActivity extends AppCompatActivity {
                                 if (result.getStatus()) {
                                     if (etEmail.getText().toString().equals(etConfirmEmail.getText().toString())) {
                                         if (etPassword.getText().toString().equals(etConfirmPassword.getText().toString())) {
-                                            final Firebase ref = new Firebase("https://the-bold-circle.firebaseio.com");
 
-                                            ref.createUser(etEmail.getText().toString(), etPassword.getText().toString(),
-                                                    new Firebase.ValueResultHandler<Map<String, Object>>() {
 
-                                                        //on user creation success
-                                                        @Override
-                                                        public void onSuccess(Map<String, Object> result) {
-                                                            Firebase userRef = ref.child("users");
+                                            BackendlessUser user = new BackendlessUser();
+                                            user.setProperty( "email", etEmail.getText().toString() );
+                                            user.setProperty("name", etFirstName.getText().toString());
+                                            user.setProperty("surname", etSurname.getText().toString());
+                                            user.setProperty("phoneNumber", etMobileNumber.getText().toString());
+                                            user.setPassword( etPassword.getText().toString() );
 
-                                                            Map<String, String> userObject = new HashMap<String, String>();
-                                                            userObject.put("first_name", etFirstName.getText().toString().toLowerCase());
-                                                            userObject.put("surname", etSurname.getText().toString().toLowerCase());
-                                                            userObject.put("mobile_number", etMobileNumber.getText().toString());
-                                                            userObject.put("email", etEmail.getText().toString().toLowerCase());
-                                                            userRef.push().setValue(userObject);
+                                            Backendless.UserService.register( user, new AsyncCallback<BackendlessUser>()
+                                            {
+                                                public void handleResponse( BackendlessUser registeredUser )
+                                                {
+                                                    // user has been registered and now can login
+                                                    Toast.makeText(getApplicationContext(), "User successfully created",
+                                                            Toast.LENGTH_LONG).show();
+                                                    finish();
+                                                }
 
-                                                            Toast.makeText(getApplicationContext(), "User successfully created. Please log in",
-                                                                    Toast.LENGTH_LONG).show();
-                                                            finish();
-                                                        }
+                                                public void handleFault( BackendlessFault fault )
+                                                {
+                                                    // an error has occurred, the error code can be retrieved with fault.getCode()
+                                                    Toast.makeText(getApplicationContext(), fault.toString(),
+                                                            Toast.LENGTH_LONG).show();
+                                                }
+                                            } );
 
-                                                        //on user creation failure
-                                                        @Override
-                                                        public void onError(FirebaseError firebaseError) {
-                                                            Toast.makeText(getApplicationContext(), firebaseError.toString(),
-                                                                    Toast.LENGTH_LONG).show();
-                                                        }
-                                                    });
+
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Passwords do not match",
                                                     Toast.LENGTH_LONG).show();

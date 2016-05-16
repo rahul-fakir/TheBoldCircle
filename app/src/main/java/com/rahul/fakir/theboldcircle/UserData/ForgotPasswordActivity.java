@@ -8,8 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 import com.rahul.fakir.theboldcircle.R;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -27,23 +28,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 final ValidationResult result = validateForm(etEmail.getText().toString(), 1);
 
                 if (result.getStatus()) {
-
-                    Firebase ref = new Firebase("https://the-bold-circle.firebaseio.com");
-                    ref.resetPassword(etEmail.getText().toString(), new Firebase.ResultHandler() {
-                        @Override
-                        public void onSuccess() {
-                            // password reset email sent
-                            Toast.makeText(getApplicationContext(), "Reset email has been sent",
+                    Backendless.UserService.restorePassword( etEmail.getText().toString(), new AsyncCallback<Void>()
+                    {
+                        public void handleResponse( Void response )
+                        {
+                            // Backendless has completed the operation - an email has been sent to the user
+                            Toast.makeText(getApplicationContext(), "Your password reset has been processed. Please check your email",
                                     Toast.LENGTH_LONG).show();
-                            Intent intentToCreateProfile = new Intent(ForgotPasswordActivity.this, LogInActivity.class);
-                            intentToCreateProfile.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intentToCreateProfile);
                         }
 
-                        @Override
-                        public void onError(FirebaseError firebaseError) {
-                            // error encountered
-                            Toast.makeText(getApplicationContext(), firebaseError.toString(),
+                        public void handleFault( BackendlessFault fault )
+                        {
+                            // password revovery failed, to get the error code call fault.getCode()
+                            Toast.makeText(getApplicationContext(), fault.toString(),
                                     Toast.LENGTH_LONG).show();
                         }
                     });

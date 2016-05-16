@@ -3,16 +3,20 @@ package com.rahul.fakir.theboldcircle.ProductData;
 /**
  * Created by rahul.fakir on 2016/05/13.
  */
-public class ProductObject {
-    private String name, description, type, ID;
-    private double price;
+public class Products {
+    private String name, description, type, sku, price, category;
 
-    public ProductObject(String ID, String name, String description, String type, double price) {
-        this.ID = ID;
+
+  public Products(){
+
+  }
+   public Products(String sku, String name, String description, String type, String price, String category) {
+        this.sku = sku;
         this.name = name;
         this.type = type;
         this.price = price;
         this.description = description;
+        this.category = category;
     }
 
     public String getName() {
@@ -31,12 +35,12 @@ public class ProductObject {
         this.description = description;
     }
 
-    public String getID() {
-        return ID;
+    public String getSku() {
+        return sku;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getType() {
@@ -47,12 +51,20 @@ public class ProductObject {
         this.type = type;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
 
