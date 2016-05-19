@@ -1,22 +1,25 @@
 package com.rahul.fakir.theboldcircle.ProductData;
 
+import java.util.List;
+
 /**
  * Created by rahul.fakir on 2016/05/13.
  */
-public class Products {
+public class tblProducts {
     private String name, description, type, sku, price, category;
+    private boolean selectedStatus = false;
 
 
-  public Products(){
+  public tblProducts(){
 
   }
-   public Products(String sku, String name, String description, String type, String price, String category) {
+   public tblProducts(String sku, String name, String description, String type, String price, String category) {
         this.sku = sku;
         this.name = name;
         this.type = type;
         this.price = price;
         this.description = description;
-        this.category = category;
+       this.category = category;
     }
 
     public String getName() {
@@ -59,13 +62,22 @@ public class Products {
         this.price = price;
     }
 
-    public String getCategory() {
+    public String getCategory()
+    {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory( String category )
+    {
         this.category = category;
     }
 
+    public void setSelectedStatus(boolean status){
+        selectedStatus = status;
+    }
+
+    public boolean getSelectedStatus(){
+        return selectedStatus;
+    }
 
 }

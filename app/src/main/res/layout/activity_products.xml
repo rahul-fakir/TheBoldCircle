@@ -46,14 +46,14 @@
     android:layout_height="wrap_content"
     android:layout_below="@+id/imgDivider"
     android:layout_centerHorizontal="true"
-    android:id="@+id/linearLayout"
+    android:id="@+id/llytCategoriesFirstLevel"
     android:layout_marginTop="5dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="All"
-                android:id="@+id/textView4"
+                android:id="@+id/tvAllCategories"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="0dp"
                 android:textColor="#72bf44"
@@ -64,9 +64,9 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="/"
-                android:id="@+id/textView5"
-                android:layout_toRightOf="@+id/textView4"
-                android:layout_toEndOf="@+id/textView4"
+                android:id="@+id/tvDivider0"
+                android:layout_toRightOf="@+id/tvAllCategories"
+                android:layout_toEndOf="@+id/tvAllCategories"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
@@ -76,60 +76,64 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Category 1"
-                android:id="@+id/textView6"
-                android:layout_toRightOf="@+id/textView5"
-                android:layout_toEndOf="@+id/textView5"
+                android:id="@+id/tvCategory1"
+                android:layout_toRightOf="@+id/tvDivider0"
+                android:layout_toEndOf="@+id/tvDivider0"
                 android:layout_marginTop="5dp"
-                android:textColor="#636363" />
+                android:textColor="#636363"
+                android:visibility="visible"
+                android:clickable="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="/"
-                android:id="@+id/textView7"
-                android:layout_toRightOf="@+id/textView6"
-                android:layout_toEndOf="@+id/textView6"
+                android:id="@+id/tvDivider1"
+                android:layout_toRightOf="@+id/tvCategory1"
+                android:layout_toEndOf="@+id/tvCategory1"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:textColor="#636363" />
+                android:textColor="#636363"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Category 2"
-                android:id="@+id/textView8"
-                android:layout_toRightOf="@+id/textView7"
-                android:layout_toEndOf="@+id/textView7"
+                android:id="@+id/tvCategory2"
+                android:layout_toRightOf="@+id/tvDivider1"
+                android:layout_toEndOf="@+id/tvDivider1"
                 android:layout_marginTop="5dp"
-                android:textColor="#636363" />
+                android:textColor="#636363"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="/"
-                android:id="@+id/textView9"
-                android:layout_toRightOf="@+id/textView8"
-                android:layout_toEndOf="@+id/textView8"
+                android:id="@+id/tvDivider2"
+                android:layout_toRightOf="@+id/tvCategory2"
+                android:layout_toEndOf="@+id/tvCategory2"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:textColor="#636363" />
+                android:textColor="#636363"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Category 3"
-                android:id="@+id/textView10"
-                android:layout_toRightOf="@+id/textView9"
-                android:layout_toEndOf="@+id/textView9"
+                android:id="@+id/tvCategory3"
+                android:layout_toRightOf="@+id/tvDivider2"
+                android:layout_toEndOf="@+id/tvDivider2"
                 android:layout_marginTop="5dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:textColor="#636363" />
 </LinearLayout>
 
@@ -137,39 +141,40 @@
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayout"
+                android:layout_below="@+id/llytCategoriesFirstLevel"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:id="@+id/linearLayout2">
+                android:id="@+id/llytCategoriesSecondLevel"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Categroy 4"
-                    android:id="@+id/textView11"
+                    android:id="@+id/tvCategory4"
                     android:textColor="#636363"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="/"
-                    android:id="@+id/textView12"
+                    android:id="@+id/tvDivider3"
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="5dp"
                     android:textColor="#636363"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="View More"
-                    android:id="@+id/textView13"
+                    android:id="@+id/tvExpandCategories"
                     android:textColor="#636363"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
             </LinearLayout>
 
             <ImageView
@@ -177,7 +182,7 @@
                 android:layout_height="2dp"
                 android:id="@+id/imageView4"
                 android:src="@mipmap/divider_icon"
-                android:layout_below="@+id/linearLayout2"
+                android:layout_below="@+id/llytCategoriesSecondLevel"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="5dp"
@@ -237,24 +242,30 @@
 
         </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollView2"
-        android:layout_marginTop="130dp"
-      >
 
+        <RelativeLayout
+            android:id="@+id/productsLoadingPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone">
 
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="130dp"
             android:scrollbars="vertical"
             android:padding="5dp" />
 
 
-    </ScrollView>
+
 </android.support.v7.widget.CardView>
 
 

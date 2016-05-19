@@ -4,10 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rahul.fakir.theboldcircle.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,10 +17,12 @@ import java.util.List;
  */
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.MyViewHolder> {
 
-    private List<Products> productList;
+    private List<tblProducts> productList;
+    public List <String> shoppingCartProductID = new ArrayList<String>();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name, type, description, price;
+        public ImageView itemSelect;
 
         public MyViewHolder(View view) {
             super(view);
@@ -26,11 +30,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             type = (TextView) view.findViewById(R.id.tvType);
             description = (TextView) view.findViewById(R.id.tvDescription);
             price = (TextView) view.findViewById(R.id.tvPrice);
+            itemSelect = (ImageView) view.findViewById(R.id.imgvProductSelected);
         }
     }
 
 
-    public ProductListAdapter(List<Products> productList) {
+
+    public ProductListAdapter(List<tblProducts> productList) {
         this.productList = productList;
     }
 
@@ -43,16 +49,46 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Products product = productList.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        final tblProducts product = productList.get(position);
         holder.name.setText(product.getName());
         holder.type.setText(product.getType());
         holder.description.setText(product.getDescription());
         holder.price.setText(product.getPrice());
+
+        if (shoppingCartProductID.contains(product.getSku())) {
+            product.setSelectedStatus(true);
+            holder.itemSelect.setImageResource(R.mipmap.selected_product_icon);
+        } else {
+            holder.itemSelect.setImageResource(R.mipmap.unselected_product_icon);
+        }
+
+        holder.itemSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (product.getSelectedStatus()) {
+                    holder.itemSelect.setImageResource(R.mipmap.unselected_product_icon);
+                    product.setSelectedStatus(false);
+                    shoppingCartProductID.remove(product.getSku());
+
+
+
+                } else {
+                    holder.itemSelect.setImageResource(R.mipmap.selected_product_icon);
+                    product.setSelectedStatus(true);
+                    shoppingCartProductID.add(product.getSku());
+
+
+                }
+
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return productList.size();
     }
+
+
 }
