@@ -1,16 +1,19 @@
 package com.rahul.fakir.theboldcircle.UserData;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.backendless.Backendless;
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessFault;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.rahul.fakir.theboldcircle.R;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -28,22 +31,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 final ValidationResult result = validateForm(etEmail.getText().toString(), 1);
 
                 if (result.getStatus()) {
-                    Backendless.UserService.restorePassword( etEmail.getText().toString(), new AsyncCallback<Void>()
-                    {
-                        public void handleResponse( Void response )
-                        {
-                            // Backendless has completed the operation - an email has been sent to the user
-                            Toast.makeText(getApplicationContext(), "Your password reset has been processed. Please check your email",
-                                    Toast.LENGTH_LONG).show();
-                        }
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                        public void handleFault( BackendlessFault fault )
-                        {
-                            // password revovery failed, to get the error code call fault.getCode()
-                            Toast.makeText(getApplicationContext(), fault.toString(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    });
+
+                    auth.sendPasswordResetEmail(etEmail.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(), "Reset email has been sent. Please check your email",
+                                                Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }
+                                }
+                            });
 
                 } else
                 {

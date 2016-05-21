@@ -12,14 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-
-import com.backendless.Backendless;
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessException;
-import com.backendless.exceptions.BackendlessFault;
-import com.rahul.fakir.theboldcircle.ProductData.ProductsActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.rahul.fakir.theboldcircle.ProductData.Products.ProductsActivity;
+import com.rahul.fakir.theboldcircle.StoreData.StoreLocationActivity;
 import com.rahul.fakir.theboldcircle.StoreData.StoresActivity;
 import com.rahul.fakir.theboldcircle.UserData.LogInActivity;
 
@@ -58,6 +54,15 @@ public class HomeScreenActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent (HomeScreenActivity.this, ProductsActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        CardView cvFindNearestStore = (CardView) findViewById(R.id.cvFindNearestStore);
+        cvFindNearestStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intenet = new Intent(HomeScreenActivity.this, StoreLocationActivity.class);
+                startActivity(intenet);
             }
         });
     }
@@ -122,25 +127,14 @@ public class HomeScreenActivity extends AppCompatActivity
 
     private void logout() {
 
-
-        Backendless.UserService.logout( new AsyncCallback<Void>()
-        {
-            public void handleResponse( Void response )
-            {
                 // user has been logged out.
+                FirebaseAuth.getInstance().signOut();
                 Intent intentToCreateProfile = new Intent(HomeScreenActivity.this, LogInActivity.class);
                 intentToCreateProfile.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentToCreateProfile);
                 finish();
-            }
 
-            public void handleFault( BackendlessFault fault )
-            {
-                // something went wrong and logout failed, to get the error code call fault.getCode()
-                Toast.makeText(getApplicationContext(), fault.toString(),
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+
 
 
     }

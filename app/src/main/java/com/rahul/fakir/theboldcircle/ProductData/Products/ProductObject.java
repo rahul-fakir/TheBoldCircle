@@ -1,19 +1,19 @@
-package com.rahul.fakir.theboldcircle.ProductData;
+package com.rahul.fakir.theboldcircle.ProductData.Products;
 
 import java.util.List;
 
 /**
  * Created by rahul.fakir on 2016/05/13.
  */
-public class tblProducts {
+public class ProductObject {
     private String name, description, type, sku, price, category;
     private boolean selectedStatus = false;
 
 
-  public tblProducts(){
+  public ProductObject(){
 
   }
-   public tblProducts(String sku, String name, String description, String type, String price, String category) {
+   public ProductObject(String sku, String name, String description, String type, String price, String category) {
         this.sku = sku;
         this.name = name;
         this.type = type;

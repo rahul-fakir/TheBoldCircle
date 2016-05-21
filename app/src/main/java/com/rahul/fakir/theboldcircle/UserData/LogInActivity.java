@@ -1,8 +1,11 @@
 package com.rahul.fakir.theboldcircle.UserData;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.LoginFilter;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,20 +15,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.backendless.Backendless;
-import com.backendless.BackendlessUser;
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessFault;
-import com.backendless.persistence.local.UserTokenStorageFactory;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.rahul.fakir.theboldcircle.HomeScreenActivity;
 import com.rahul.fakir.theboldcircle.R;
 
 public class LogInActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        Backendless.initApp( LogInActivity.this, "1D58A6DB-C412-6AA4-FFBB-2E2A7EC0CB00", "CDBE2EF7-DC1E-0D16-FFD8-18D0DF281000", "v1" );
         final TextView tvCreateProfile = (TextView) findViewById(R.id.tvCreateProfile);
         final Button btnLogin = (Button) findViewById(R.id.btnLogin);
         final EditText etEmail = (EditText) findViewById(R.id.etEmail);
@@ -33,18 +38,15 @@ public class LogInActivity extends AppCompatActivity {
         final TextView tvResetPassword = (TextView) findViewById(R.id.tvForgotPassword);
         final CheckBox cbxPersistSession = (CheckBox) findViewById(R.id.cbxPersistSession);
 
-        String userToken = UserTokenStorageFactory.instance().getStorage().get();
 
-        if( userToken != null && !userToken.equals( "" ) )
-        {
-            Intent intentToMain = new Intent(LogInActivity.this, HomeScreenActivity.class);
-            intentToMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intentToMain);
-            finish();
+        /*
+        CHECK FOR AUTH HERE
+        */
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            intentToHome();
         }
-
-
-
         tvCreateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,28 +70,30 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ValidationResult result = validateForm(etEmail.getText().toString(), 1);
-
                 if (result.getStatus()){
                     result = validateForm(etPassword.getText().toString(), 3);
                     if (result.getStatus()) {
+                        mAuth = FirebaseAuth.getInstance();
+                        mAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
+                                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        // If sign in fails, display a message to the user. If sign in succeeds
+                                        // the auth state listener will be notified and logic to handle the
+                                        // signed in user can be handled in the listener.
+                                        if (!task.isSuccessful()) {
 
-
-                        Backendless.UserService.login( etEmail.getText().toString(), etPassword.getText().toString(), new AsyncCallback<BackendlessUser>()
-                        {
-                            public void handleResponse( BackendlessUser user )
-                            {
-                                // user has been logged in
-                                Intent intent = new Intent (LogInActivity.this, HomeScreenActivity.class);
-                                startActivity(intent);
-                            }
-
-                            public void handleFault( BackendlessFault fault )
-                            {
-                                // login failed, to get the error code call fault.getCode()
-                               Toast.makeText(getApplicationContext(), fault.toString(),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }, cbxPersistSession.isChecked());
+                                            Toast.makeText(LogInActivity.this, "Sign In Failed.",
+                                                    Toast.LENGTH_SHORT).show();
+                                            System.out.println(task.getException().toString());
+                                        } else {
+                                            if (!cbxPersistSession.isChecked()) {
+                                                FirebaseAuth.getInstance().signOut();
+                                            }
+                                            intentToHome();
+                                        }
+                                    }
+                                });
 
                     } else{
                         Toast.makeText(getApplicationContext(), result.getMessage(),
@@ -109,5 +113,12 @@ public class LogInActivity extends AppCompatActivity {
         DataValidation validationCheck = new DataValidation(input, code);
         ValidationResult result = new ValidationResult(validationCheck.getValidationStatus(), validationCheck.getErrorMessage());
         return result;
+    }
+
+
+    private void intentToHome(){
+        Intent intent = new Intent(LogInActivity.this, HomeScreenActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

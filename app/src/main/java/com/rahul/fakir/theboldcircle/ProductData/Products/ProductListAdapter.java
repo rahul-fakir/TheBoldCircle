@@ -1,4 +1,4 @@
-package com.rahul.fakir.theboldcircle.ProductData;
+package com.rahul.fakir.theboldcircle.ProductData.Products;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,17 +9,18 @@ import android.widget.TextView;
 
 import com.rahul.fakir.theboldcircle.R;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by rahul.fakir on 2016/05/13.
  */
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.MyViewHolder> {
 
-    private List<tblProducts> productList;
-    public List <String> shoppingCartProductID = new ArrayList<String>();
-
+    private List<ProductObject> productList;
+    public static HashMap<String, ProductObject> cartObjects = new HashMap();
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name, type, description, price;
         public ImageView itemSelect;
@@ -36,8 +37,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
 
 
-    public ProductListAdapter(List<tblProducts> productList) {
+    public ProductListAdapter(List<ProductObject> productList) {
         this.productList = productList;
+
     }
 
     @Override
@@ -50,13 +52,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final tblProducts product = productList.get(position);
+        final ProductObject product = productList.get(position);
         holder.name.setText(product.getName());
         holder.type.setText(product.getType());
         holder.description.setText(product.getDescription());
         holder.price.setText(product.getPrice());
+        if (cartObjects.containsKey(product.getSku())){
 
-        if (shoppingCartProductID.contains(product.getSku())) {
             product.setSelectedStatus(true);
             holder.itemSelect.setImageResource(R.mipmap.selected_product_icon);
         } else {
@@ -66,18 +68,18 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.itemSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (product.getSelectedStatus()) {
                     holder.itemSelect.setImageResource(R.mipmap.unselected_product_icon);
                     product.setSelectedStatus(false);
-                    shoppingCartProductID.remove(product.getSku());
-
-
+                   // shoppingCartProductID.remove(product.getSku());
+                    cartObjects.remove(product.getSku());
 
                 } else {
                     holder.itemSelect.setImageResource(R.mipmap.selected_product_icon);
                     product.setSelectedStatus(true);
-                    shoppingCartProductID.add(product.getSku());
-
+                  //  shoppingCartProductID.add(product.getSku());
+                    cartObjects.put(product.getSku(), product);
 
                 }
 

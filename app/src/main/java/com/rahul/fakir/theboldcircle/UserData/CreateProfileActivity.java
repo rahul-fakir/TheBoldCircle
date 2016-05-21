@@ -1,30 +1,35 @@
 package com.rahul.fakir.theboldcircle.UserData;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.backendless.Backendless;
-import com.backendless.BackendlessUser;
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessException;
-import com.backendless.exceptions.BackendlessFault;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rahul.fakir.theboldcircle.R;
 
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class CreateProfileActivity extends AppCompatActivity {
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
-        Backendless.initApp( CreateProfileActivity.this, "1D58A6DB-C412-6AA4-FFBB-2E2A7EC0CB00", "CDBE2EF7-DC1E-0D16-FFD8-18D0DF281000", "v1" );
-
 
         //variable decleration
         final EditText etFirstName = (EditText) findViewById(R.id.etFirstName);
@@ -37,6 +42,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         final Button btnCreateProfile = (Button) findViewById(R.id.btnCreateProfile);
 
         //create profile button click handler
+        assert btnCreateProfile != null;
         btnCreateProfile.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -55,32 +61,47 @@ public class CreateProfileActivity extends AppCompatActivity {
                                     if (etEmail.getText().toString().equals(etConfirmEmail.getText().toString())) {
                                         if (etPassword.getText().toString().equals(etConfirmPassword.getText().toString())) {
 
+                                            //database user created
+                                            final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                                            mAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
+                                                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                                            // If sign in fails, display a message to the user. If sign in succeeds
+                                                            // the auth state listener will be notified and logic to handle the
+                                                            // signed in user can be handled in the listener.
+                                                            if (!task.isSuccessful()) {
+                                                                Toast.makeText(CreateProfileActivity.this, "Sign-up Failed.",
+                                                                        Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                //userprofile created
 
-                                            BackendlessUser user = new BackendlessUser();
-                                            user.setProperty( "email", etEmail.getText().toString() );
-                                            user.setProperty("name", etFirstName.getText().toString());
-                                            user.setProperty("surname", etSurname.getText().toString());
-                                            user.setProperty("phoneNumber", etMobileNumber.getText().toString());
-                                            user.setPassword( etPassword.getText().toString() );
+                                                                FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                                                                EncodeEmailToUsername username = new EncodeEmailToUsername(etEmail.getText().toString());
+                                                                DatabaseReference newUserRef = mDatabase.getReference("users").child(username.getUsername());
+                                                                newUserRef.child("firstName").setValue(etFirstName.getText().toString().toLowerCase());
+                                                                newUserRef.child("lastName").setValue(etSurname.getText().toString().toLowerCase());
+                                                                newUserRef.child("mobileNumber").setValue(etMobileNumber.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (!task.isSuccessful()) {
+                                                                            Toast.makeText(CreateProfileActivity.this, "Sign-up Failed.",
+                                                                                    Toast.LENGTH_SHORT).show();
+                                                                        } else
+                                                                        {
+                                                                            Toast.makeText(CreateProfileActivity.this, "Your profile is created. Please log in",
+                                                                                    Toast.LENGTH_SHORT).show();
+                                                                            FirebaseAuth.getInstance().signOut();
+                                                                            finish();
+                                                                        }
+                                                                    }
+                                                                });
 
-                                            Backendless.UserService.register( user, new AsyncCallback<BackendlessUser>()
-                                            {
-                                                public void handleResponse( BackendlessUser registeredUser )
-                                                {
-                                                    // user has been registered and now can login
-                                                    Toast.makeText(getApplicationContext(), "User successfully created",
-                                                            Toast.LENGTH_LONG).show();
-                                                    finish();
-                                                }
+                                                            }
 
-                                                public void handleFault( BackendlessFault fault )
-                                                {
-                                                    // an error has occurred, the error code can be retrieved with fault.getCode()
-                                                    Toast.makeText(getApplicationContext(), fault.toString(),
-                                                            Toast.LENGTH_LONG).show();
-                                                }
-                                            } );
-
+                                                            // ...
+                                                        }
+                                                    });
 
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Passwords do not match",
@@ -114,15 +135,10 @@ public class CreateProfileActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "First name cannot be blank",
                             Toast.LENGTH_LONG).show();
                 }
-
-
-
-
             }
         });
 
     }
-
 
     public ValidationResult validateForm(String input, int code){
         DataValidation validationCheck = new DataValidation(input, code);

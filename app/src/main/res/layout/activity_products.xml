@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductData.ProductsActivity"
+    tools:context=".ProductData.Products.ProductsActivity"
     android:background="#FFFFFFFF">
 
     <ImageView
@@ -217,7 +217,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Submit Selection"
-                android:id="@+id/textView14"
+                android:id="@+id/tvSubmitProducts"
                 android:layout_alignTop="@+id/imageView6"
                 android:layout_alignRight="@+id/imageView4"
                 android:layout_alignEnd="@+id/imageView4"
