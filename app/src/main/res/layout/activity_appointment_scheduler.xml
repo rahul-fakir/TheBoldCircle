@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rahul.fakir.theboldcircle.ProductData.Checkout.AppointmentSchedulerActivity"
+    android:background="#FFFFFFFF">
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:src="@mipmap/watermark_background"
+        android:scaleType="centerCrop"></ImageView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView2"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Select a date for your Virus Removal Appointment:"
+                android:id="@+id/textView14"
+                android:layout_alignParentTop="true"
+
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Select Date"
+                android:id="@+id/button4"
+                android:layout_below="@id/textView14"
+                android:background="@drawable/main_color_button"
+                android:textColor="#FFFFFFFF"
+                android:layout_marginTop="5dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

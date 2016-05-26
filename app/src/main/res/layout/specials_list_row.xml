@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cvSpecials"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="0dp"
+
+        android:layout_alignParentBottom="false"
+        android:layout_marginBottom="15dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageView8"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/special_star_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:id="@+id/imageView9"
+                android:layout_below="@+id/imageView8"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/divider_icon"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="SPECIAL 1"
+                android:id="@+id/tvSpecialName"
+                android:layout_below="@+id/imageView9"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="7.5dp"
+                android:textStyle="bold"
+                android:textColor="#636363"
+                android:layout_marginBottom="7.5dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:id="@+id/imgDivider"
+                android:src="@mipmap/divider_icon"
+                android:scaleType="fitXY"
+                android:layout_below="@+id/tvSpecialName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+<LinearLayout
+    android:id="@+id/lytButtonsContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/imgDivider"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="10dp">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/imgvSpecialType"
+                android:src="@mipmap/unselected_product_icon"
+
+                android:layout_alignTop="@+id/imageView10"
+                android:layout_toLeftOf="@+id/imageView12"
+                android:layout_toStartOf="@+id/imageView12"
+                android:layout_marginRight="10dp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageView12"
+                android:src="@mipmap/phone_icon"
+
+                android:layout_alignTop="@+id/imageView10"
+                android:layout_alignRight="@+id/tvSpecialName"
+                android:layout_alignEnd="@+id/tvSpecialName"
+                android:layout_marginLeft="10dp" />
+</LinearLayout>
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:id="@+id/imgSpecialForward"
+                android:layout_alignTop="@+id/lytButtonsContainer"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:src="@mipmap/forward_icon"
+                android:layout_marginRight="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/tvSpecialDescription"
+                android:layout_below="@+id/lytButtonsContainer"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:text="tvSpecialDescription"
+                android:textColor="#636363" />
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

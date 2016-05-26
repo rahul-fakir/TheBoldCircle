@@ -3,13 +3,8 @@
     package="com.rahul.fakir.theboldcircle">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
@@ -28,7 +23,7 @@
         <activity
             android:name=".HomeScreenActivity"
             android:label="@string/title_activity_home_screen"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".UserData.CreateProfileActivity" />
         <activity android:name=".UserData.ForgotPasswordActivity" />
         <activity android:name=".StoreData.StoresActivity" />
@@ -50,7 +45,10 @@
 
         <activity
             android:name=".StoreData.StoreLocationActivity"
-            android:label="@string/title_activity_store_location"></activity>
+            android:label="@string/title_activity_store_location" />
+        <activity android:name=".UserData.UserProfileActivity" />
+        <activity android:name=".ProductData.Specials.SpecialsActivity" />
+        <activity android:name=".ProductData.Checkout.AppointmentSchedulerActivity"></activity>
     </application>
 
 </manifest>

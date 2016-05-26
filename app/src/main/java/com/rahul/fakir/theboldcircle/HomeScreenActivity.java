@@ -2,6 +2,7 @@ package com.rahul.fakir.theboldcircle;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,14 +15,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.rahul.fakir.theboldcircle.ProductData.Checkout.AppointmentSchedulerActivity;
+import com.rahul.fakir.theboldcircle.ProductData.Products.ProductObject;
 import com.rahul.fakir.theboldcircle.ProductData.Products.ProductsActivity;
+import com.rahul.fakir.theboldcircle.ProductData.Specials.SpecialsActivity;
 import com.rahul.fakir.theboldcircle.StoreData.StoreLocationActivity;
 import com.rahul.fakir.theboldcircle.StoreData.StoresActivity;
 import com.rahul.fakir.theboldcircle.UserData.LogInActivity;
+import com.rahul.fakir.theboldcircle.UserData.UserProfileActivity;
+
+import java.util.HashMap;
 
 public class HomeScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+
+
+    public static HashMap<String, ProductObject> cartObjects = new HashMap();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,16 +55,28 @@ public class HomeScreenActivity extends AppCompatActivity
         cvStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeScreenActivity.this, StoresActivity.class);
+                Intent intent = new Intent (HomeScreenActivity.this, ProductsActivity.class);
                 startActivity(intent);
             }
         });
+
+
+        CardView cvContact = (CardView) findViewById(R.id.cvContact);
+        cvContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (HomeScreenActivity.this, StoresActivity.class);
+                intent.putExtra("listType", 0);
+                startActivity(intent);
+            }
+        });
+
 
         CardView cvSpecials = (CardView) findViewById(R.id.cvSpecials);
         cvSpecials.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (HomeScreenActivity.this, ProductsActivity.class);
+                Intent intent = new Intent (HomeScreenActivity.this, SpecialsActivity.class);
                 startActivity(intent);
             }
         });
@@ -61,8 +85,9 @@ public class HomeScreenActivity extends AppCompatActivity
         cvFindNearestStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intenet = new Intent(HomeScreenActivity.this, StoreLocationActivity.class);
-                startActivity(intenet);
+               // Intent intenet = new Intent(HomeScreenActivity.this, StoreLocationActivity.class);
+                Intent intent = new Intent(HomeScreenActivity.this, AppointmentSchedulerActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -105,17 +130,18 @@ public class HomeScreenActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_profile) {
+            Intent intent = new Intent(HomeScreenActivity.this, UserProfileActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_rewards) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_services_products) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_contact) {
+
+        } else if (id == R.id.nav_license) {
 
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 
@@ -138,5 +164,7 @@ public class HomeScreenActivity extends AppCompatActivity
 
 
     }
+
+
 
 }

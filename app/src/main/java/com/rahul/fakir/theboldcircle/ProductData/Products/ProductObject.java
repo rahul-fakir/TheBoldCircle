@@ -6,8 +6,8 @@ import java.util.List;
  * Created by rahul.fakir on 2016/05/13.
  */
 public class ProductObject {
-    private String name, description, type, sku, price, category;
-    private boolean selectedStatus = false;
+    private String name, description, type, sku, price, category, appointmentStore = "";
+    private boolean selectedStatus = false, appointmentStatus = false;
 
 
   public ProductObject(){
@@ -72,12 +72,34 @@ public class ProductObject {
         this.category = category;
     }
 
-    public void setSelectedStatus(boolean status){
+    public void setAppointmentSet(boolean status){
         selectedStatus = status;
     }
 
     public boolean getSelectedStatus(){
         return selectedStatus;
     }
+
+    public void setSelectedStatus(boolean status){
+        selectedStatus = status;
+    }
+
+    public void setAppointmentStatus(boolean status){
+        appointmentStatus = status;
+    }
+
+    public boolean getAppointmentStatus(){
+        return appointmentStatus;
+    }
+
+    public String getAppointmentStore(){
+        return appointmentStore;
+    }
+
+    public void setAppointmentStore(String store) {
+        appointmentStore = store;
+    }
+
+
 
 }

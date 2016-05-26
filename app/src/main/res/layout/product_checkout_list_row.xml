@@ -128,6 +128,22 @@
         android:layout_alignTop="@+id/textView23"
         android:layout_alignLeft="@+id/tvAppointmentStore"
         android:layout_alignStart="@+id/tvAppointmentStore" />
+
 </RelativeLayout>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:text="Schedule Appointment"
+        android:id="@+id/btnScheduleAppointment"
+        android:layout_below="@id/tvPrice"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/main_color_button"
+        android:textColor="#FFFFFFFF"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone" />
+
 
 </RelativeLayout>

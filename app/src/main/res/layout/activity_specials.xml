@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StoreData.StoresActivity"
-    android:background="#FFFFFFFF">
 
+    tools:context="com.rahul.fakir.theboldcircle.ProductData.Specials.SpecialsActivity"
+    android:background="#FFFFFFFF">
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -13,21 +13,13 @@
         android:src="@mipmap/watermark_background"
         android:scaleType="centerCrop" ></ImageView>
 
-
-    <ScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView"
-        android:layout_marginTop="10dp"
-
-       >
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" ></android.support.v7.widget.RecyclerView>
-    </ScrollView>
+        android:layout_margin="10dp"
+        android:scrollbars="vertical"
+    />
 
     <RelativeLayout
         android:id="@+id/lytLoadingPanel"
@@ -41,6 +33,5 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
     </RelativeLayout>
-
 
 </RelativeLayout>

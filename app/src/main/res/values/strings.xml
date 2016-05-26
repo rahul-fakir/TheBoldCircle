@@ -19,4 +19,5 @@
 
     <string name="FIREBASE_BASE_URL"></string>
     <string name="title_activity_store_location">Find a store</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

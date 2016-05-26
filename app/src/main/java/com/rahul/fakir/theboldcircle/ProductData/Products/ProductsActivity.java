@@ -265,19 +265,12 @@ public class ProductsActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user value
 
-
-
                         for (DataSnapshot postSnapshotProducts: dataSnapshot.getChildren()) {
 
                                 ProductObject product = postSnapshotProducts.getValue(ProductObject.class);
                                 product.setCategory(category);
                                 product.setSku(postSnapshotProducts.getKey().toString());
                                 productList.add(product);
-
-
-
-
-
 
                         }
                         pAdapter.notifyDataSetChanged();
@@ -286,7 +279,7 @@ public class ProductsActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+System.out.println("Google is playing games:/");
                     }
                 });
     }

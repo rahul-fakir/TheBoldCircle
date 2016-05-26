@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.rahul.fakir.theboldcircle.HomeScreenActivity;
@@ -43,6 +44,7 @@ public class LogInActivity extends AppCompatActivity {
         CHECK FOR AUTH HERE
         */
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user != null) {
             // User is signed in
             intentToHome();
@@ -94,6 +96,8 @@ public class LogInActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
+
+
 
                     } else{
                         Toast.makeText(getApplicationContext(), result.getMessage(),

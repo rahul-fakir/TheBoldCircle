@@ -1,8 +1,9 @@
 package com.rahul.fakir.theboldcircle.StoreData;
 
+import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.rahul.fakir.theboldcircle.Graphics.DividerItemDecoration;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rahul.fakir.theboldcircle.R;
 
 import java.util.ArrayList;
@@ -22,48 +27,89 @@ public class StoresActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private StoreListAdapter mAdapter;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stores);
 
-
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-
-
-        mAdapter = new StoreListAdapter(storeList);
+        Bundle extras = getIntent().getExtras();
+        int listType = 0;
+        if (extras != null) {
+            listType = extras.getInt("listType");
+            // and get whatever type user account id is
+        }
+        mAdapter = new StoreListAdapter(storeList, listType, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
         recyclerView.setAdapter(mAdapter);
+
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 StoreObject store = storeList.get(position);
-                Toast.makeText(getApplicationContext(), store.getID() + " is selected!", Toast.LENGTH_SHORT).show();
-            }
+          }
 
             @Override
             public void onLongClick(View view, int position) {
 
             }
         }));
-        prepareMovieData();
+        prepareStoreData();
     }
 
-    private void prepareMovieData() {
-        StoreObject store = new StoreObject("001", "Woodmead");
-        storeList.add(store);
-        store = new StoreObject("002", "Centurioen");
-        storeList.add(store);
-        store = new StoreObject("003", "Westgate");
-        storeList.add(store);
-        store = new StoreObject("004", "Tshwane");
-        storeList.add(store);
-        mAdapter.notifyDataSetChanged();
+    private void prepareStoreData() {
+        findViewById(R.id.lytLoadingPanel).setVisibility(View.VISIBLE);
+        final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference storesRef = mDatabase.getReference("stores").child("storeDetails");
+
+        storesRef.orderByChild("name").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapshotStores: dataSnapshot.getChildren()) {
+                            final StoreObject store = postSnapshotStores.getValue(StoreObject.class);
+                            store.setID(postSnapshotStores.getKey());
+
+                            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                            DatabaseReference hoursRef = mDatabase.getReference("stores")
+                                    .child("storeSchedules").child(store.getID()).child("operationalHours");
+
+                            hoursRef.addListenerForSingleValueEvent(
+                                    new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            String[] days = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "publicHoliday"} ;
+                                            for (int i = 0; i < days.length; i++){
+                                             //  System.out.println(dataSnapshot.getKey() + " " + dataSnapshot.child(days[i]).child("open"));
+                                                if ((Boolean)(dataSnapshot.child(days[i]).child("status").getValue())) {
+                                                    store.setHours(i, 0, Double.valueOf(dataSnapshot.child(days[i]).child("open").getValue().toString()));
+                                                    store.setHours(i, 1, Double.valueOf(dataSnapshot.child(days[i]).child("close").getValue().toString()));
+                                                }
+                                            }
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                            storeList.add(store);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        findViewById(R.id.lytLoadingPanel).setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public interface ClickListener {
@@ -114,5 +160,8 @@ public class StoresActivity extends AppCompatActivity {
 
         }
     }
+
+
+
 
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.rahul.fakir.theboldcircle.HomeScreenActivity;
 import com.rahul.fakir.theboldcircle.R;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.Set;
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.MyViewHolder> {
 
     private List<ProductObject> productList;
-    public static HashMap<String, ProductObject> cartObjects = new HashMap();
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name, type, description, price;
         public ImageView itemSelect;
@@ -57,7 +58,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.type.setText(product.getType());
         holder.description.setText(product.getDescription());
         holder.price.setText(product.getPrice());
-        if (cartObjects.containsKey(product.getSku())){
+        if (HomeScreenActivity.cartObjects.containsKey(product.getSku())){
 
             product.setSelectedStatus(true);
             holder.itemSelect.setImageResource(R.mipmap.selected_product_icon);
@@ -73,13 +74,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                     holder.itemSelect.setImageResource(R.mipmap.unselected_product_icon);
                     product.setSelectedStatus(false);
                    // shoppingCartProductID.remove(product.getSku());
-                    cartObjects.remove(product.getSku());
+                    HomeScreenActivity.cartObjects.remove(product.getSku());
 
                 } else {
                     holder.itemSelect.setImageResource(R.mipmap.selected_product_icon);
                     product.setSelectedStatus(true);
                   //  shoppingCartProductID.add(product.getSku());
-                    cartObjects.put(product.getSku(), product);
+                    HomeScreenActivity.cartObjects.put(product.getSku(), product);
 
                 }
 

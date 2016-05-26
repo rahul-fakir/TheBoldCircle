@@ -1,6 +1,10 @@
 package com.rahul.fakir.theboldcircle.ProductData.Checkout;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rahul.fakir.theboldcircle.Graphics.DividerItemDecoration;
+import com.rahul.fakir.theboldcircle.HomeScreenActivity;
 import com.rahul.fakir.theboldcircle.ProductData.Products.ProductListAdapter;
 import com.rahul.fakir.theboldcircle.ProductData.Products.ProductObject;
 import com.rahul.fakir.theboldcircle.R;
@@ -44,7 +49,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
 //products
         productsRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        productsAdapter = new ProductCheckoutListAdapter(productList);
+        productsAdapter = new ProductCheckoutListAdapter(productList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         productsRecyclerView.setLayoutManager(mLayoutManager);
         productsRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -54,8 +59,7 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 ProductObject product = productList.get(position);
-                Toast.makeText(getApplicationContext(), product.getName() + " is selected!", Toast.LENGTH_SHORT).show();
-            }
+           }
 
             @Override
             public void onLongClick(View view, int position) {
@@ -65,7 +69,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
         serviceRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_services);
-        serviceAdapter = new ProductCheckoutListAdapter(serviceList);
+        serviceAdapter = new ProductCheckoutListAdapter(serviceList, this);
         RecyclerView.LayoutManager serviceLayoutManager = new LinearLayoutManager(getApplicationContext());
         serviceRecyclerView.setLayoutManager(serviceLayoutManager);
         serviceRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -88,7 +92,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void prepareProductData() {
 
-        for(Map.Entry<String, ProductObject> entry : ProductListAdapter.cartObjects.entrySet()) {
+        for(Map.Entry<String, ProductObject> entry : HomeScreenActivity.cartObjects.entrySet()) {
 
             if (entry.getValue().getType().equals("good")) {
                 productsTotal += Double.parseDouble(entry.getValue().getPrice().substring(1));
@@ -163,4 +167,38 @@ public class CheckoutActivity extends AppCompatActivity {
         }
     }
 
+
+   @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+       Toast.makeText(this, "HIIIII",
+               Toast.LENGTH_LONG).show();
+
+       SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+       Boolean storeChosen = preferences.getBoolean("storeChosen", false);
+
+       if (storeChosen) {
+           String appointmentStore = preferences.getString("appointmentStore", "");
+           String currentProduct = preferences.getString("currentProduct", "");
+            for (int i = 0; i < serviceAdapter.checkoutProductList.size(); i++) {
+
+                if (serviceAdapter.checkoutProductList.get(i).getSku().equals(currentProduct)){
+                    serviceAdapter.checkoutProductList.get(i).setName(appointmentStore);
+                    serviceAdapter.notifyDataSetChanged();
+
+                    Intent intent = new Intent(CheckoutActivity.this, AppointmentSchedulerActivity.class);
+
+                    startActivity(intent);
+
+                }
+            }
+
+       }
+        /*if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                Toast.makeText(this, "HELLO",
+                        Toast.LENGTH_LONG).show();
+            }
+        }*/
+    }
 }
