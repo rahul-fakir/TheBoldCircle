@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rahul.fakir.theboldcircle.ProductData.Checkout.PaymentActivity"
+    android:background="#FFFFFFFF">
+
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:src="@mipmap/watermark_background"
+        android:scaleType="centerCrop"></ImageView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Complete Purchase"
+        android:id="@+id/btnCompletePurchase"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/main_color_button"
+        android:layout_margin="10dp"
+        android:textColor="#FFFFFFFF" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sviewHolder"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:fillViewport="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lytShippingDetails">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Shipping Address:"
+                    android:id="@+id/textView33"
+
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:inputType="textPostalAddress"
+                    android:ems="10"
+                    android:id="@+id/etAddressOne"
+                    android:layout_below="@id/textView33"
+
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:text="3650 Spruce St"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@mipmap/edit_text_background"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:inputType="textPostalAddress"
+                    android:ems="10"
+                    android:id="@+id/etAddressTwo"
+                    android:layout_below="@+id/etAddressOne"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignRight="@+id/etAddressOne"
+                    android:layout_alignEnd="@+id/etAddressOne"
+                    android:text="RM 313, WCH, COXE"
+                    android:background="@mipmap/edit_text_background"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="textPostalAddress"
+                    android:ems="10"
+                    android:id="@+id/etCity"
+                    android:layout_below="@id/etAddressTwo"
+                    android:text="Philadelphia"
+                    android:background="@mipmap/edit_text_background"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:layout_marginRight="150dp" />
+
+                <EditText
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:inputType="textPostalAddress"
+                    android:ems="10"
+                    android:id="@+id/etProvince"
+                    android:layout_alignBottom="@+id/etCity"
+                    android:layout_alignRight="@+id/etAddressTwo"
+                    android:layout_alignEnd="@+id/etAddressTwo"
+                    android:text="PA"
+                    android:background="@mipmap/edit_text_background"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:inputType="textPostalAddress"
+                    android:ems="10"
+                    android:id="@+id/etZipCode"
+                    android:layout_below="@+id/etCity"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:text="19104"
+                    android:background="@mipmap/edit_text_background"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:id="@+id/etCountry"
+                    android:padding="10dp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/etProvince"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="150dp"
+                    android:background="@mipmap/edit_text_background"
+                    android:text="South Africa" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/lytShippingDetails"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="PAYMENT WILL BE DONE HERE"
+                    android:id="@+id/tvPaymentDetails" />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

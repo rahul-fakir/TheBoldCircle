@@ -1,12 +1,10 @@
 package com.rahul.fakir.theboldcircle.UserData;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.cast.TextTrackStyle;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +17,7 @@ import com.rahul.fakir.theboldcircle.R;
 public class UserProfileActivity extends AppCompatActivity {
     private String username;
     private EncodeEmailToUsername encoder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,17 +61,14 @@ public class UserProfileActivity extends AppCompatActivity {
                 etZipCode.setText(purchasingOptions.child("zipCode").getValue().toString());
                 etCountry.setText(purchasingOptions.child("country").getValue().toString());
                 tvStoreID.setText(dataSnapshot.child("purchasingOptions").child("defaultStore").getValue().toString());
-//System.out.println("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" + ;
+
                 DatabaseReference storeRef = database.getReference("stores").child("storeDetails").child(dataSnapshot.child("purchasingOptions").child("defaultStore").getValue().toString());
                 storeRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    tvStoreName.setText(dataSnapshot.child("name").getValue().toString());//.child("name").getValue().toString());
+                        tvStoreName.setText(dataSnapshot.child("name").getValue().toString());
                         tvStoreAddress.setText(dataSnapshot.child("address").getValue().toString());
-
-
-
                     }
 
                     @Override

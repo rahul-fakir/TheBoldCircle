@@ -22,8 +22,7 @@
         android:layout_height="match_parent"
         card_view:cardCornerRadius="0dp"
         android:layout_margin="20dp"
-        android:layout_alignParentBottom="false"
-     >
+        android:layout_alignParentBottom="false">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

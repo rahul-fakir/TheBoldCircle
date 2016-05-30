@@ -1,40 +1,40 @@
 package com.rahul.fakir.theboldcircle.ProductData.Checkout;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rahul.fakir.theboldcircle.Graphics.DividerItemDecoration;
 import com.rahul.fakir.theboldcircle.HomeScreenActivity;
-import com.rahul.fakir.theboldcircle.ProductData.Products.ProductListAdapter;
 import com.rahul.fakir.theboldcircle.ProductData.Products.ProductObject;
 import com.rahul.fakir.theboldcircle.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CheckoutActivity extends AppCompatActivity {
+
     private Double productsTotal = 0.0, servicesTotal = 0.0, taxTotal = 0.0;
-    private List<ProductObject> productList = new ArrayList<>();
-    private List<ProductObject> serviceList = new ArrayList<>();
+    public static List<ProductObject> productList = new ArrayList<>();
+    public static List<ProductObject> serviceList = new ArrayList<>();
     private RecyclerView productsRecyclerView, serviceRecyclerView;
     private ProductCheckoutListAdapter productsAdapter, serviceAdapter;
     private TextView tvProductsTotal, tvServicesTotal, tvSubTotal, tvTaxTotal, tvTotal;
+    private Button btnCompletePayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,20 @@ public class CheckoutActivity extends AppCompatActivity {
         tvSubTotal = (TextView) findViewById(R.id.tvSubTotal);
         tvTaxTotal = (TextView) findViewById(R.id.tvTaxTotal);
         tvTotal = (TextView) findViewById(R.id.tvTotal);
+        btnCompletePayment = (Button) findViewById(R.id.btnCompletePayment);
+        btnCompletePayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CheckoutActivity.this, PaymentActivity.class);
+                intent.putExtra("productsTotal", Float.valueOf(String.valueOf(productsTotal)));
+                intent.putExtra("servicesTotal", Float.valueOf(String.valueOf(servicesTotal)));
+                intent.putExtra("taxTotal", Float.valueOf(String.valueOf(taxTotal)));
+
+                startActivityForResult(intent, 4);
+
+
+            }
+        });
 
 //products
         productsRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -91,7 +105,8 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void prepareProductData() {
-
+        productList.clear();
+        serviceList.clear();
         for(Map.Entry<String, ProductObject> entry : HomeScreenActivity.cartObjects.entrySet()) {
 
             if (entry.getValue().getType().equals("good")) {
@@ -176,29 +191,60 @@ public class CheckoutActivity extends AppCompatActivity {
 
        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
        Boolean storeChosen = preferences.getBoolean("storeChosen", false);
-
+       SharedPreferences.Editor editor = preferences.edit();
+       Boolean appointmentSet = preferences.getBoolean("appointmentSet", false);
+       Boolean appointmentsNotValid = preferences.getBoolean("appointmentsNotValid", false);
+       String appointmentStore = null, currentProduct;
        if (storeChosen) {
-           String appointmentStore = preferences.getString("appointmentStore", "");
-           String currentProduct = preferences.getString("currentProduct", "");
+
+           appointmentStore = preferences.getString("appointmentStore", "");
+           currentProduct = preferences.getString("currentProduct", "");
             for (int i = 0; i < serviceAdapter.checkoutProductList.size(); i++) {
 
                 if (serviceAdapter.checkoutProductList.get(i).getSku().equals(currentProduct)){
                     serviceAdapter.checkoutProductList.get(i).setName(appointmentStore);
                     serviceAdapter.notifyDataSetChanged();
 
-                    Intent intent = new Intent(CheckoutActivity.this, AppointmentSchedulerActivity.class);
 
-                    startActivity(intent);
+                    editor.putBoolean("storeChosen", false);
+                    editor.apply();
+                    Intent intent = new Intent(CheckoutActivity.this, AppointmentSchedulerActivity.class);
+                    startActivityForResult(intent, 2);
 
                 }
             }
 
+       } else if (appointmentSet) {
+           double appointmentStart = Double.valueOf(preferences.getFloat("appointmentStart", 0));
+           double appointmentEnd = Double.valueOf(preferences.getFloat("appointmentEnd", 0));
+           String appointmentStoreName = preferences.getString("appointmentStoreName", "");
+           appointmentStore = preferences.getString("appointmentStore", "");
+           currentProduct = preferences.getString("currentProduct", "");
+           String appointmentDate = preferences.getString("appointmentDate", "");
+           int skillsAvailable = preferences.getInt("skillsAvailable", 0);
+
+           for (int i = 0; i < serviceAdapter.checkoutProductList.size(); i++) {
+
+               if (serviceAdapter.checkoutProductList.get(i).getSku().equals(currentProduct)) {
+                   serviceAdapter.checkoutProductList.get(i).setAppointmentStatus(true);
+                   serviceAdapter.checkoutProductList.get(i).setAppointmentStore(appointmentStore);
+                   serviceAdapter.checkoutProductList.get(i).setAppointmentStoreName(appointmentStoreName);
+                   serviceAdapter.checkoutProductList.get(i).setAppointmentStart(appointmentStart);
+                   serviceAdapter.checkoutProductList.get(i).setAppointmentEnd(appointmentEnd);
+                   serviceAdapter.checkoutProductList.get(i).setAppointmentDate(appointmentDate);
+                   serviceAdapter.checkoutProductList.get(i).setSkillsAvailable(skillsAvailable);
+
+                   serviceAdapter.notifyDataSetChanged();
+               }
+           }
+
+       } else if (appointmentsNotValid) {
+           //Need to adjust for two users booking at the same time;
+           serviceAdapter.notifyDataSetChanged();
+
        }
-        /*if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
-                Toast.makeText(this, "HELLO",
-                        Toast.LENGTH_LONG).show();
-            }
-        }*/
+
     }
+
+
 }

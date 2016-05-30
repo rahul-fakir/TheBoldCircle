@@ -66,8 +66,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="6th May 2016"
         android:id="@+id/tvAppointmentDate"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textView16" />
+        android:layout_alignTop="@+id/textView17"
+        android:layout_toRightOf="@+id/textView16"
+        android:layout_toEndOf="@+id/textView16" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -86,8 +87,7 @@
         android:text="09:00 am"
         android:id="@+id/tvAppointmentTime"
         android:layout_below="@+id/tvAppointmentDate"
-        android:layout_alignLeft="@+id/tvAppointmentDate"
-        android:layout_alignStart="@+id/tvAppointmentDate" />
+        android:layout_toRightOf="@+id/textView16" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -105,37 +105,16 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Woodmead"
         android:id="@+id/tvAppointmentStore"
-        android:layout_alignTop="@+id/textView21"
-        android:layout_alignLeft="@+id/tvAppointmentTime"
-        android:layout_alignStart="@+id/tvAppointmentTime" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Reference No."
-        android:id="@+id/textView23"
-        android:layout_below="@+id/textView21"
-        android:layout_alignLeft="@+id/textView21"
-        android:layout_alignStart="@+id/textView21" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="AFJHKJ765"
-        android:id="@+id/tvAppointmentReferenceNumber"
-        android:layout_alignTop="@+id/textView23"
-        android:layout_alignLeft="@+id/tvAppointmentStore"
-        android:layout_alignStart="@+id/tvAppointmentStore" />
+        android:layout_below="@+id/tvAppointmentTime"
+        android:layout_toRightOf="@+id/textView16" />
 
 </RelativeLayout>
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:text="Schedule Appointment"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:text="Schedule"
         android:id="@+id/btnScheduleAppointment"
         android:layout_below="@id/tvPrice"
         android:layout_alignParentRight="true"

@@ -23,7 +23,7 @@
         <activity
             android:name=".HomeScreenActivity"
             android:label="@string/title_activity_home_screen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UserData.CreateProfileActivity" />
         <activity android:name=".UserData.ForgotPasswordActivity" />
         <activity android:name=".StoreData.StoresActivity" />
@@ -48,7 +48,13 @@
             android:label="@string/title_activity_store_location" />
         <activity android:name=".UserData.UserProfileActivity" />
         <activity android:name=".ProductData.Specials.SpecialsActivity" />
-        <activity android:name=".ProductData.Checkout.AppointmentSchedulerActivity"></activity>
+        <activity android:name=".ProductData.Checkout.AppointmentSchedulerActivity" />
+        <activity android:name=".StoreData.Messaging.StoreChatActivity" />
+        <activity android:name=".Licensing.LicensingActivity" />
+        <activity android:name=".Sharing.ShareActivity" />
+        <activity
+            android:name=".ProductData.Checkout.PaymentActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>

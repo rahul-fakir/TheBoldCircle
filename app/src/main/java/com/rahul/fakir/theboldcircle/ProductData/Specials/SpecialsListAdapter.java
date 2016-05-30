@@ -1,5 +1,7 @@
 package com.rahul.fakir.theboldcircle.ProductData.Specials;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,22 +20,24 @@ import java.util.List;
 public class SpecialsListAdapter extends RecyclerView.Adapter<SpecialsListAdapter.MyViewHolder> {
 
     private List<SpecialObject> specialsList;
+    private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tvSpecialName, tvSpecialDescription;
-        public ImageView imgvSpecialType;
+        public ImageView imgvSpecialType, imgvSpecialForward;
 
         public MyViewHolder(View view) {
             super(view);
             tvSpecialName = (TextView) view.findViewById(R.id.tvSpecialName);
             tvSpecialDescription = (TextView) view.findViewById(R.id.tvSpecialDescription);
             imgvSpecialType = (ImageView) view.findViewById(R.id.imgvSpecialType);
-
+            imgvSpecialForward = (ImageView) view.findViewById(R.id.imgSpecialForward);
         }
     }
 
 
-    public SpecialsListAdapter(List<SpecialObject> specialsList) {
+    public SpecialsListAdapter(List<SpecialObject> specialsList, Context context) {
+        this.context = context;
         this.specialsList = specialsList;
     }
 
@@ -74,17 +78,27 @@ public class SpecialsListAdapter extends RecyclerView.Adapter<SpecialsListAdapte
                 if (specialObject.getProduct().getSelectedStatus()) {
                     holder.imgvSpecialType.setImageResource(R.mipmap.unselected_product_icon);
                     specialObject.getProduct().setSelectedStatus(false);
-                    // shoppingCartProductID.remove(product.getSku());
                     HomeScreenActivity.cartObjects.remove(specialObject.getProductSKU());
 
                 } else {
                     holder.imgvSpecialType.setImageResource(R.mipmap.selected_product_icon);
                     specialObject.getProduct().setSelectedStatus(true);
-                    //  shoppingCartProductID.add(product.getSku());
                     HomeScreenActivity.cartObjects.put(specialObject.getProductSKU(), specialObject.getProduct());
 
                 }
 
+            }
+        });
+
+        holder.imgvSpecialForward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check this special out!");
+                intent.putExtra(android.content.Intent.EXTRA_TEXT, specialObject.getDescription());
+                intent.putExtra(Intent.EXTRA_TITLE, specialObject.getName());
+                context.startActivity(Intent.createChooser(intent, "Share this special"));
             }
         });
 

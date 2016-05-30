@@ -10,13 +10,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.rahul.fakir.theboldcircle.ProductData.Categories.AllCategoriesActivity;
 import com.rahul.fakir.theboldcircle.ProductData.Categories.CategoryObject;
@@ -272,6 +270,7 @@ public class ProductsActivity extends AppCompatActivity {
                                 product.setSku(postSnapshotProducts.getKey().toString());
                                 productList.add(product);
 
+
                         }
                         pAdapter.notifyDataSetChanged();
                         findViewById(R.id.productsLoadingPanel).setVisibility(View.GONE);
@@ -328,7 +327,11 @@ System.out.println("Google is playing games:/");
         }
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        pAdapter.notifyDataSetChanged();
+    }
 
 
 }

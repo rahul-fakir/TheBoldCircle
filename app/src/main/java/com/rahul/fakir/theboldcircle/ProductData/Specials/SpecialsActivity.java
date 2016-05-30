@@ -1,15 +1,14 @@
 package com.rahul.fakir.theboldcircle.ProductData.Specials;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,8 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.rahul.fakir.theboldcircle.Graphics.DividerItemDecoration;
 import com.rahul.fakir.theboldcircle.ProductData.Products.ProductObject;
 import com.rahul.fakir.theboldcircle.R;
-import com.rahul.fakir.theboldcircle.StoreData.StoreListAdapter;
-import com.rahul.fakir.theboldcircle.StoreData.StoreObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +38,7 @@ public class SpecialsActivity  extends AppCompatActivity {
             recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
 
-
-            sAdapter = new SpecialsListAdapter(specialsList);
+            sAdapter = new SpecialsListAdapter(specialsList, this);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -162,6 +158,14 @@ public static class RecyclerTouchListener implements RecyclerView.OnItemTouchLis
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
     }
+
+
 }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sAdapter.notifyDataSetChanged();
+    }
 
 }

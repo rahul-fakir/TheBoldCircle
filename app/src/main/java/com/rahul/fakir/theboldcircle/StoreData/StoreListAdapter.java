@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.text.Text;
-import com.rahul.fakir.theboldcircle.ProductData.Checkout.CheckoutActivity;
 import com.rahul.fakir.theboldcircle.R;
+import com.rahul.fakir.theboldcircle.StoreData.Messaging.StoreChatActivity;
 
 import java.util.List;
 
@@ -85,6 +84,16 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.MyVi
         switch (listType){
             case 0: {
                 holder.btnStoreInteraction.setText("CHAT WITH STORE");
+                holder.btnStoreInteraction.setOnClickListener(new View.OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, StoreChatActivity.class);
+                        intent.putExtra("storeID", storeObjects.getID());
+                        ((Activity) context).startActivity(intent);
+                    }
+                });
                 break;
             }
             case 1: {
@@ -103,6 +112,7 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.MyVi
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( ((Activity)context));
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("appointmentStore",storeObjects.getID());
+                        editor.putString("appointmentStoreName", storeObjects.getName());
                         editor.putBoolean("storeChosen", true);
 
                         editor.apply();

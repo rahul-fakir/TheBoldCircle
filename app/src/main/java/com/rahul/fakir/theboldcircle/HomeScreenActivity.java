@@ -2,25 +2,24 @@ package com.rahul.fakir.theboldcircle;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.rahul.fakir.theboldcircle.Licensing.LicensingActivity;
 import com.rahul.fakir.theboldcircle.ProductData.Checkout.AppointmentSchedulerActivity;
 import com.rahul.fakir.theboldcircle.ProductData.Products.ProductObject;
 import com.rahul.fakir.theboldcircle.ProductData.Products.ProductsActivity;
 import com.rahul.fakir.theboldcircle.ProductData.Specials.SpecialsActivity;
-import com.rahul.fakir.theboldcircle.StoreData.StoreLocationActivity;
+import com.rahul.fakir.theboldcircle.Sharing.ShareActivity;
 import com.rahul.fakir.theboldcircle.StoreData.StoresActivity;
 import com.rahul.fakir.theboldcircle.UserData.LogInActivity;
 import com.rahul.fakir.theboldcircle.UserData.UserProfileActivity;
@@ -117,7 +116,7 @@ public class HomeScreenActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
             logout();
         }
 
@@ -136,13 +135,17 @@ public class HomeScreenActivity extends AppCompatActivity
         } else if (id == R.id.nav_rewards) {
 
         } else if (id == R.id.nav_services_products) {
-
+            Intent intent = new Intent(this, ProductsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_contact) {
-
+            Intent intent = new Intent(this, StoresActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_license) {
-
+            Intent intent = new Intent(this, LicensingActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
-
+            Intent intent = new Intent(this, ShareActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
